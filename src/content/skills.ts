@@ -10,20 +10,20 @@ export const skillGroups: SkillGroup[] = [
   {
     title: "Machine-learning systems",
     description:
-      "Forecasting, feature engineering and model evaluation — with an emphasis on honest validation and models that hold up outside the notebook.",
-    technologies: ["Python", "Machine Learning", "Time-Series Analysis", "Feature Engineering", "LLMs"],
+      "Forecasting, feature engineering and model evaluation — with an emphasis on honest, time-aware validation and models that hold up outside the notebook.",
+    technologies: ["Python", "Machine Learning", "Time-Series Analysis", "Feature Engineering", "LLMs", "Pandas", "LightGBM", "XGBoost"],
   },
   {
     title: "Full-stack products",
     description:
       "APIs, background workers and interfaces, built end to end and deployed as coherent systems rather than disconnected pieces.",
-    technologies: ["Flask", "FastAPI", "Vue.js", "Node.js", "Express.js", "Celery", "JavaScript", "HTML", "CSS"],
+    technologies: ["Flask", "FastAPI", "Vue.js", "Node.js", "Express.js", "Celery", "JavaScript (ES6+)", "HTML5", "CSS"],
   },
   {
     title: "Data & infrastructure",
     description:
       "Schemas, queries and pipelines that make the rest possible — relational and document stores, caching, containers and version control.",
-    technologies: ["SQL", "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "DBMS", "Docker", "Git", "GitHub", "Bash"],
+    technologies: ["SQL", "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "DBMS", "Docker", "Git", "GitHub", "Bash", "Markdown"],
   },
 ];
 

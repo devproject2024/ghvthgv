@@ -1,8 +1,9 @@
 import { Link, Navigate, useParams } from "react-router-dom";
 import type { Project, ProjectSection } from "@/content/types";
 import { getProject, nextProject, projectNumber, projects } from "@/content";
+import { DOMAINS, projectDomain } from "@/content/domains";
+import { Meta } from "@/components/Meta";
 import { Figure, Gallery } from "@/components/Figure";
-import { usePageTitle } from "@/components/Layout";
 import { Container, Eyebrow, Rule, Tag } from "@/components/primitives";
 import { Reveal } from "@/components/Reveal";
 import { cn } from "@/utils/cn";
@@ -14,20 +15,21 @@ import { cn } from "@/utils/cn";
 export default function ProjectDetail() {
   const { slug = "" } = useParams();
   const project = getProject(slug);
-  usePageTitle(project?.title);
 
   if (!project) return <Navigate to="/work" replace />;
 
   const next = nextProject(project.slug);
   const number = projectNumber(project.slug);
   const links = collectLinks(project);
+  const domain = projectDomain(project.category);
 
   const sections: ProjectSection[] = [
     { heading: "Overview", body: project.overview ?? [] },
     { heading: "Problem", body: project.problem ?? [] },
     { heading: "What I built", body: project.solution ?? [] },
-    { heading: "Architecture & approach", body: project.architecture ?? [] },
-    { heading: "Details", body: project.details ?? [] },
+    { heading: "Approach", body: project.approach ?? [] },
+    { heading: "Architecture", body: project.architecture ?? [] },
+    { heading: "Engineering decisions", body: project.details ?? [] },
     ...(project.extraSections ?? []),
   ].filter((s) => s.body.length > 0);
 
@@ -35,6 +37,11 @@ export default function ProjectDetail() {
 
   return (
     <article>
+      <Meta
+        title={project.title}
+        path={`/work/${project.slug}`}
+        description={project.description}
+      />
       {/* Header ------------------------------------------------------- */}
       <section className="pt-10 lg:pt-20">
         <Container>
@@ -50,6 +57,7 @@ export default function ProjectDetail() {
           <div className="grid grid-cols-12 gap-x-6 gap-y-10 pb-14 pt-14 lg:pb-20 lg:pt-24">
             <Reveal className="col-span-12 lg:col-span-9">
               <div className="mb-6 flex items-center gap-3 text-label text-ink-3">
+                <span className={cn("inline-block h-1.5 w-1.5 rounded-full", DOMAINS[domain].dot)} />
                 <span>{project.category}</span>
                 <span aria-hidden>·</span>
                 <span className="tabular">{project.year}</span>
@@ -66,12 +74,7 @@ export default function ProjectDetail() {
                 <Row label="Role">{project.role}</Row>
                 <Row label="Status">
                   <span className="inline-flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "inline-block h-1.5 w-1.5 rounded-full",
-                        project.status === "Live" || project.status === "In progress" ? "bg-accent" : "bg-ink-3"
-                      )}
-                    />
+                    <span className={cn("inline-block h-1.5 w-1.5 rounded-full", DOMAINS[domain].dot)} />
                     {project.status}
                   </span>
                 </Row>
@@ -144,25 +147,37 @@ export default function ProjectDetail() {
         </section>
       )}
 
-      {/* Gallery ------------------------------------------------------ */}
-      {project.gallery && project.gallery.length > 0 ? (
-        <section className="pb-20 lg:pb-32">
+      {/* Metrics ------------------------------------------------------ */}
+      {project.metrics && project.metrics.length > 0 && (
+        <section className="py-16 lg:py-24">
           <Container>
-            <Eyebrow className="mb-8">Screens</Eyebrow>
-            <Gallery items={project.gallery} />
-          </Container>
-        </section>
-      ) : (
-        <section className="pb-20 lg:pb-32">
-          <Container>
-            <Eyebrow className="mb-8">Screens</Eyebrow>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-              <Figure aspect="4/3" placeholderNote="Screenshot to be added" placeholderLabel="gallery[0]" />
-              <Figure aspect="4/3" placeholderNote="Screenshot to be added" placeholderLabel="gallery[1]" />
+            <div className="grid grid-cols-2 gap-x-8 gap-y-10 border-t border-line pt-10 md:grid-cols-4">
+              {project.metrics.map((m, i) => (
+                <Reveal key={m.label} delay={i * 70}>
+                  <p className="text-h2 tabular text-ink">{m.value}</p>
+                  <p className="text-mono-sm mt-3 text-ink-3">{m.label}</p>
+                </Reveal>
+              ))}
             </div>
           </Container>
         </section>
       )}
+
+      {/* Gallery ------------------------------------------------------ */}
+      <section className="pb-20 lg:pb-32">
+        <Container>
+          <Eyebrow className="mb-8">Screens</Eyebrow>
+          {project.gallery && project.gallery.length > 0 ? (
+            <Gallery items={project.gallery} />
+          ) : (
+            <Figure
+              aspect="16/9"
+              placeholderLabel={project.title}
+              placeholderNote="Screenshots to be added — see projects.ts → gallery[]"
+            />
+          )}
+        </Container>
+      </section>
 
       {/* Outcomes + technology --------------------------------------- */}
       <section className="bg-carbon py-20 text-chalk lg:py-28">

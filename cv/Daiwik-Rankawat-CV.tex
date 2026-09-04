@@ -1,0 +1,210 @@
+%-------------------------
+% Resume in Latex
+% Author : Daiwik Rankawat
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%
+% This is the CANONICAL résumé source. Keep it as the master document.
+% The website does NOT parse this file at runtime (LaTeX cannot be
+% reliably converted in the browser). Instead run:
+%
+%     npm run cv:extract
+%
+% which parses this file into structured data (cv/extracted.json),
+% and then reconcile the values into src/content/*.ts by hand.
+% See cv/README.md for the full workflow.
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[label=--]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Daiwik Rankawat} \\ \vspace{1pt}
+    \small +91-9460279327 $|$ \href{mailto:daiwikrankawat21062003@gmail.com}{\underline{daiwikrankawat21062003@gmail.com}} $|$
+    \href{https://linkedin.com/in/daiwikrankawat}{\underline{linkedin.com/in/daiwikrankawat}} $|$
+    \href{https://github.com/daiwik-project}{\underline{github.com/daiwik-project}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Indian Institute of Technology Madras}{Chennai, India}
+      {BS in Data Science and Applications (Expected Graduation: May 2028)}{2022 -- Present}
+      \resumeItemListStart
+        \resumeItem{\textbf{Credential Earned:} Official Diploma in Programming \& Data Science (Completed 2025)}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Jai Narayan Vyas University}{Jodhpur, India}
+      {BSc in Biology}{2020 -- 2023}
+  \resumeSubHeadingListEnd
+
+%-----------COMPETITIVE ACHIEVEMENTS-----------
+\section{Competitive Achievements}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{Rank 1 / 1,900+ (Top 1\%)} $|$ Kaggle ML Competition}{Jan 2026}
+      \resumeItemListStart
+        \resumeItem{Built predictive models that achieved Rank 1 among 1,900+ global competitors (Top 1\%) in a Kaggle-hosted competition.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{Rank 28 / 2,500+ (Top 1\%)} $|$ Kaggle ML Capstone Project}{Sept 2025}
+      \resumeItemListStart
+        \resumeItem{Developed machine learning architectures that achieved Rank 28 of 2,500+ participants (Top 1\%) in a Kaggle capstone project.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{Rank 31 / 3,800+ (Top 2\%)} $|$ Modern App Development Project}{May 2025}
+      \resumeItemListStart
+        \resumeItem{Designed a scalable software application that ranked 31st among 3,800+ entries (Top 2\%).}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Evoastra Ventures Pvt Ltd}{Remote}
+      {AI \& ML Researcher (Intern)}{Jan 2026 -- Mar 2026}
+      \resumeItemListStart
+        \resumeItem{Selected among \textbf{50+} applicants for a research-driven remote internship, building \textbf{intelligent business systems} using Generative AI and ML across \textbf{3+} live use-cases.}
+        \resumeItem{Contributed across \textbf{software development, data engineering, and applied ML} workflows within a \textbf{5-member} cross-functional team, improving delivery turnaround by \textbf{20\%}.}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Higher Education Institution}{Jodhpur, India}
+      {Product Analyst (Intern)}{May 2024 -- Sept 2025}
+      \resumeItemListStart
+        \resumeItem{Analyzed data from 1,500+ students to uncover usage patterns and engagement trends.}
+        \resumeItem{Identified a \$10 million revenue gap tied to student dropout trends across core services.}
+        \resumeItem{Formulated a 3-stage planning framework adopted by leadership to boost student retention for FY 24-25.}
+        \resumeItem{Partnered with cross-functional teams to clean and validate data, refine analytics models, and align outcomes with company goals.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{Full-Stack Examination Platform} $|$ \emph{Flask, Vue.js, Redis, Celery} $|$ \href{https://github.com/daiwik-project}{\underline{GitHub Project Link}}}{Grade: 9/10}
+      \resumeItemListStart
+        \resumeItem{Architected a full-stack quiz platform with live score dashboards and automated email alerts.}
+        \resumeItem{Created 50+ REST APIs and configured Redis caching to reduce database query load by 40\%, achieving sub-200ms response times.}
+        \resumeItem{Strengthened application security by implementing OTP verification and OAuth 2.0 authentication across 50+ API endpoints.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{Cinema Audience Forecasting Model} $|$ \emph{Python, Pandas, LightGBM, XGBoost} $|$ \href{https://github.com/daiwik-project}{\underline{GitHub Project Link}}}{Grade: 9/10}
+      \resumeItemListStart
+        \resumeItem{Predicted movie theater attendance volumes using a dataset of 300,000+ entries.}
+        \resumeItem{Engineered 25+ features using rolling windows, lag variables, and time-based aggregations.}
+        \resumeItem{Achieved a low Mean Absolute Error (MAE) of 14.8 using tuned LightGBM and XGBoost models.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages \& Tools}{: Python, SQL, Bash, HTML5, CSS, JavaScript (ES6+), Git, GitHub, VS Code, Docker, Markdown} \\
+     \textbf{Frameworks \& DBs}{: Flask, FastAPI, Vue.js, Node.js, Express.js, Celery, PostgreSQL, MySQL, SQLite, MongoDB, Redis} \\
+     \textbf{Core Concepts}{: Machine Learning, DBMS, Time-Series Analysis, Feature Engineering, Full-Stack Web Development, LLMs}
+    }}
+ \end{itemize}
+
+%-----------LEADERSHIP & CERTIFICATIONS-----------
+\section{Leadership \& Certifications}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{Team Founder \& Project Manager} $|$ Software Engineering, IIT Madras}{2026}
+      \resumeItemListStart
+        \resumeItem{Selected as 1 of 12 project leaders among 500+ peers to manage a cross-functional development team.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{Technical Executive} $|$ Codemet Event, Antrium}{2023}
+      \resumeItemListStart
+        \resumeItem{Directed technical setup and operational schedules for a campus-wide coding hackathon.}
+      \resumeItemListEnd
+    \resumeProjectHeading
+      {\textbf{Certifications \& Diplomas:}}{}
+      \resumeItemListStart
+        \resumeItem{IIT Madras: Diploma \& Advanced Certificate in Programming \& Data Science (2025).}
+        \resumeItem{HackerRank: Advanced SQL for Data Scientists $|$ SQL (Basic, Intermediate, Advanced) (2024/2025).}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}

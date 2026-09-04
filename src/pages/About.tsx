@@ -1,28 +1,32 @@
 import { education, profile, ventures, venturesIntro } from "@/content";
+import { DOMAINS } from "@/content/domains";
+import { Meta } from "@/components/Meta";
+import { SplitHeadline } from "@/components/SplitHeadline";
 import { Figure } from "@/components/Figure";
-import { usePageTitle } from "@/components/Layout";
 import { ArrowLink, Container, Eyebrow, Rule, SectionHeader } from "@/components/primitives";
 import { Reveal } from "@/components/Reveal";
+import { cn } from "@/utils/cn";
 
 export default function About() {
-  usePageTitle("About");
   const aboutPhotos = profile.photos.filter((p) => p.placement === "about" || p.placement === "any");
   const primary = aboutPhotos[0];
   const secondary = aboutPhotos[1];
 
   return (
     <>
+      <Meta title="About" path="/about" description={profile.aboutIntro} />
+
       {/* Intro ---------------------------------------------------------- */}
       <section className="pt-12 lg:pt-24">
         <Container>
-          <Reveal className="grid grid-cols-12 gap-x-6 gap-y-8">
-            <div className="col-span-12 lg:col-span-3">
+          <div className="grid grid-cols-12 gap-x-6 gap-y-8">
+            <Reveal className="col-span-12 lg:col-span-3">
               <Eyebrow>About</Eyebrow>
-            </div>
+            </Reveal>
             <div className="col-span-12 lg:col-span-9">
-              <h1 className="text-h1 max-w-[22ch] text-ink">{profile.aboutIntro}</h1>
+              <SplitHeadline as="h1" text={profile.aboutIntro} className="text-h1 max-w-[22ch] text-ink" />
             </div>
-          </Reveal>
+          </div>
         </Container>
       </section>
 
@@ -74,7 +78,10 @@ export default function About() {
             <Reveal delay={80} className="col-span-12 lg:col-span-7 lg:col-start-5">
               <div className="space-y-6">
                 {profile.bio.map((p, i) => (
-                  <p key={i} className={i === 0 ? "text-lead max-w-[56ch] text-ink" : "max-w-[62ch] text-[17px] leading-[1.65] text-ink-2"}>
+                  <p
+                    key={i}
+                    className={i === 0 ? "text-lead max-w-[56ch] text-ink" : "max-w-[62ch] text-[17px] leading-[1.65] text-ink-2"}
+                  >
                     {p}
                   </p>
                 ))}
@@ -125,7 +132,10 @@ export default function About() {
             {ventures.map((v, i) => (
               <Reveal key={v.name} delay={(i % 3) * 70} className="border-t border-carbon-line pt-6">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-label tabular text-chalk-2">0{i + 1}</span>
+                  <span className="flex items-center gap-2 text-label tabular text-chalk-2">
+                    0{i + 1}
+                    <span className={cn("inline-block h-1.5 w-1.5 rounded-full", DOMAINS[v.domain ?? "editorial"].bright)} />
+                  </span>
                   {v.status && <span className="text-label text-chalk-2">{v.status}</span>}
                 </div>
                 <h3 className="text-h3 mt-6 text-chalk">{v.name}</h3>
@@ -138,8 +148,8 @@ export default function About() {
                 ))}
                 {v.url && (
                   <div className="mt-6">
-                    <ArrowLink href={v.url} dark size="sm">
-                      Visit
+                    <ArrowLink to={v.url} dark size="sm">
+                      {v.url.startsWith("/ventures") ? "Open venture" : "Open"}
                     </ArrowLink>
                   </div>
                 )}
@@ -163,6 +173,7 @@ export default function About() {
                     <p className="text-mono-sm tabular col-span-12 text-ink-3 sm:col-span-3">
                       {e.start} — {e.end}
                       {e.endNote && <span className="block text-ink-3/80">{e.endNote}</span>}
+                      {e.location && <span className="block text-ink-3/80">{e.location}</span>}
                     </p>
                     <div className="col-span-12 sm:col-span-9">
                       <h3 className="text-[1.125rem] font-medium tracking-[-0.015em] text-ink">{e.institution}</h3>
@@ -180,8 +191,9 @@ export default function About() {
                   </Reveal>
                 ))}
               </ul>
-              <div className="mt-8">
-                <ArrowLink to="/experience">Experience, achievements and skills</ArrowLink>
+              <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+                <ArrowLink to="/experience">Experience, achievements & skills</ArrowLink>
+                <ArrowLink to="/ventures">Ventures</ArrowLink>
               </div>
             </div>
           </div>

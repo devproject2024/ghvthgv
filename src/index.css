@@ -1,9 +1,20 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   DESIGN SYSTEM
-   A restrained, editorial palette. No gradients anywhere.
+   DESIGN SYSTEM — V2
+   A restrained, editorial palette. Solid colours only — no gradients.
    Change the tokens below to retheme the entire site.
+
+   Colour roles
+   ------------
+   paper / ink / line … neutral editorial surfaces and text
+   tech     … software, data, AI / ML      (muted slate blue)
+   markets  … investing, trading, capital  (deep forest green)
+   ventures … business, entrepreneurship   (terracotta — also `accent`)
+   editorial uses the neutral ink.
+
+   Accents are used for small marks only: category dots, selected
+   states, links, tags, data — never large coloured backgrounds.
 ------------------------------------------------------------------- */
 @theme {
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -18,7 +29,19 @@
   --color-ink-3: #86827a;      /* tertiary / labels */
   --color-line: #d8d3ca;       /* hairlines */
   --color-line-2: #c4beb2;     /* stronger hairlines */
-  --color-accent: #9c4a2b;     /* single restrained accent — used sparingly */
+
+  /* Domain accents — solid, muted */
+  --color-tech: #33506b;          /* steel blue */
+  --color-tech-soft: #e6ebee;     /* tinted surface on paper */
+  --color-tech-bright: #93afc9;   /* legible variant on carbon */
+
+  --color-markets: #3d5c45;       /* forest green */
+  --color-markets-soft: #e6eae3;
+  --color-markets-bright: #a3c0a1;
+
+  --color-ventures: #9c4a2b;      /* terracotta (the single V1 accent) */
+  --color-ventures-soft: #f1e4db;
+  --color-ventures-bright: #d69a77;
 
   /* Inverted (dark) surfaces */
   --color-carbon: #111110;
@@ -132,6 +155,36 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Line-mask headline reveal — each line rises out of a mask on mount.
+     The signature typographic entrance; fast, expo-eased, staggered. */
+  .line-mask-wrap {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em; /* keep descenders inside the mask */
+    margin-bottom: -0.06em;
+  }
+  .line-mask {
+    display: block;
+    transform: translateY(110%);
+    animation: line-rise 0.95s var(--ease-out-expo) both;
+    animation-delay: var(--line-delay, 120ms);
+    will-change: transform;
+  }
+  @keyframes line-rise {
+    from {
+      transform: translateY(110%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .line-mask {
+      animation: none;
+      transform: none;
+    }
+  }
+
   /* Reveal-on-scroll. Elements start hidden and animate once observed. */
   .reveal {
     opacity: 0;
@@ -230,7 +283,15 @@
     transform: scale(1.025);
   }
 
-  /* Placeholder texture — a fine hairline pattern, deliberately plain. */
+  /* Full-bleed: break a Container and span the viewport edge to edge. */
+  .bleed-x {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Placeholder texture — a fine hairline pattern, deliberately plain.
+     (A repeating hairline, not a colour gradient.) */
   .placeholder-surface {
     background-color: var(--color-paper-2);
     background-image: repeating-linear-gradient(

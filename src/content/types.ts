@@ -3,8 +3,11 @@
  * -----------------------------------------------------------------
  * These types describe every piece of editable content on the site.
  * You should rarely need to change this file — edit the content files
- * (profile.ts, projects.ts, experience.ts, …) instead.
+ * (profile.ts, projects.ts, businesses.ts, investments.ts, …) instead.
  */
+
+/** The four "areas of work" the site is organised around. */
+export type Domain = "tech" | "markets" | "ventures" | "editorial";
 
 /** A single image or video used anywhere on the site. */
 export interface Media {
@@ -41,6 +44,12 @@ export type ProjectCategory =
 
 export type ProjectStatus = "Live" | "Completed" | "In progress" | "Archived" | "Concept";
 
+export interface ProjectMetric {
+  /** The headline number/figure, e.g. "40%" or "sub-200ms". */
+  value: string;
+  label: string;
+}
+
 export interface ProjectSection {
   heading: string;
   /** Each string becomes a paragraph. */
@@ -60,9 +69,13 @@ export interface Project {
   description: string;
   role: string;
   status: ProjectStatus;
-  /** Set to true to show the project on the home page. */
+  /** Set to true to feature in the large editorial block on the Work page. */
   featured?: boolean;
+  /** Set true to pin into the home "Selected work" set. */
+  onHome?: boolean;
   technologies: string[];
+  /** Optional measured results, rendered as evidence on the project page. */
+  metrics?: ProjectMetric[];
 
   /** Hero image / screenshot for the project page and the home index. Optional — a placeholder renders if absent. */
   cover?: Media;
@@ -73,6 +86,7 @@ export interface Project {
   overview?: string[];
   problem?: string[];
   solution?: string[];
+  approach?: string[];
   architecture?: string[];
   details?: string[];
   outcomes?: string[];
@@ -127,14 +141,19 @@ export interface Achievement {
   prefix?: string;
   /** Text placed after the figure, e.g. "/ 1,900+". */
   suffix?: string;
-  /** Short description, e.g. "Kaggle competition". */
+  /** Short description, e.g. "Kaggle ML competition". */
   label: string;
   /** Supporting detail, e.g. "Top 1%". */
   detail?: string;
+  /** One-sentence context of what was done. */
+  description?: string;
   year?: string;
+  /** e.g. "Jan 2026" — shown where a precise date is useful. */
+  date?: string;
   url?: string;
 }
 
+/** Short, factual list of "pursuits" used on the home & about pages. */
 export interface Venture {
   /** e.g. "Investing", "Trading", "Venture", "Restaurant" */
   name: string;
@@ -146,8 +165,154 @@ export interface Venture {
   detail?: string[];
   since?: string;
   status?: "Active" | "Paused" | "Exited";
+  domain?: Domain;
   url?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/* Businesses / ventures (dedicated /ventures pages)                   */
+/* ------------------------------------------------------------------ */
+
+export type BusinessStatus =
+  | "Operating"
+  | "Active"
+  | "Building"
+  | "Pre-launch"
+  | "Paused"
+  | "Exited";
+
+export interface BusinessMetric {
+  /** Raw numeric value — rendered through the number formatter when `format` is "compact". */
+  value: string | number;
+  label: string;
+  /** "compact" applies K/M/B formatting to numeric values. */
+  format?: "text" | "compact";
+}
+
+export interface Business {
+  /** URL slug — becomes /ventures/<slug>. */
+  slug: string;
+  name: string;
+  /** Display name used before the real name is added. */
+  category: string;
+  /** One line for the index. */
+  summary: string;
+  /** Two or three sentences for the detail page header. */
+  description: string;
+  role: string;
+  status: BusinessStatus;
+  /** Year or "Year — present". */
+  year: string;
+  /** Set true to render the large editorial block at the top of /ventures. */
+  featured?: boolean;
+  domain?: Domain;
+
+  /** Physical or operating location. */
+  location?: string;
+  /** Website — omitted (or empty) and no button is rendered. */
+  website?: string;
+  /** Any other external links. */
+  links?: Link[];
+
+  /** Logo / cover / photographs. Placeholders render when absent. */
+  logo?: Media;
+  cover?: Media;
+  gallery?: Media[];
+
+  /** Case-study style narrative sections. */
+  overview?: string[];
+  story?: string[];
+  operations?: string[];
+  extraSections?: ProjectSection[];
+
+  /** OPTIONAL — only displayed if you provide AND privacy allows. Never invent. */
+  metrics?: BusinessMetric[];
+  team?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Investments / markets (dedicated /markets page)                     */
+/* ------------------------------------------------------------------ */
+
+export type InvestmentType =
+  | "Angel"
+  | "Venture fund"
+  | "Syndicate"
+  | "Public equity"
+  | "Private"
+  | "Other";
+
+export type InvestmentStatus = "Active" | "Realized" | "Tracking" | "Exited";
+
+export interface Investment {
+  /** URL slug — reserved for future /markets/<slug> detail pages. */
+  slug: string;
+  /** Company or fund name. */
+  name: string;
+  /** Sector / category, e.g. "Developer tools", "Fintech". */
+  category: string;
+  type: InvestmentType;
+  status: InvestmentStatus;
+  /** Date text, e.g. "2025" or "Q2 2026". */
+  date?: string;
+
+  /** Short thesis — why, in one or two lines. */
+  thesis: string;
+  description?: string;
+  notes?: string;
+
+  /** Logo / image. Placeholder renders when absent. */
+  logo?: Media;
+  website?: string;
+  links?: Link[];
+
+  /* PRIVATE — rendered only if settings.finance.showInvestmentAmounts is true. */
+  amount?: number;
+  ownership?: string;
+}
+
+/** Portfolio summary figures. Every value is gated by the privacy flags. */
+export interface PortfolioStat {
+  label: string;
+  /** Numeric for compact formatting, or a string to render verbatim. */
+  value: string | number;
+  /** Compact (K/M/B) for numeric values. */
+  format?: "text" | "compact" | "percent";
+  /** Which privacy flag must be on for this to render. */
+  privacy: "showInvestmentAmounts" | "showPortfolioAllocation" | "showNetWorth" | "showPerformance";
+}
+
+export interface MarketsContent {
+  eyebrow: string;
+  title: string;
+  intro: string[];
+  /** Approach / philosophy bullets. */
+  approach: { title: string; body: string }[];
+  /** Headline shown over the portfolio list. */
+  portfolioHeading: string;
+  /** Copy shown while no investments are listed (default — privacy). */
+  portfolioNote: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Leadership & certifications                                         */
+/* ------------------------------------------------------------------ */
+
+export interface LeadershipItem {
+  title: string;
+  organisation: string;
+  year: string;
+  detail?: string;
+}
+
+export interface Certification {
+  title: string;
+  issuer: string;
+  year: string;
+  url?: string;
+}
+
+/* ------------------------------------------------------------------ */
 
 export interface SkillGroup {
   /** What you build — e.g. "Machine learning systems" */

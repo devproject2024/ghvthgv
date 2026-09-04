@@ -44,14 +44,14 @@ export function Nav() {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300",
-          scrolled || open ? "border-b border-line bg-paper" : "border-b border-transparent bg-transparent"
+          scrolled || open ? "border-b border-line bg-paper/95 backdrop-blur-sm" : "border-b border-transparent bg-transparent"
         )}
       >
         <Container>
           <nav className="flex h-16 items-center justify-between lg:h-[72px]" aria-label="Primary">
             <Link
               to="/"
-              className="text-[15px] font-medium tracking-[-0.02em] text-ink"
+              className="shrink-0 text-[15px] font-medium tracking-[-0.02em] text-ink"
               aria-label={`${profile.name} — home`}
             >
               {profile.shortName}
@@ -59,14 +59,14 @@ export function Nav() {
             </Link>
 
             {/* Desktop links */}
-            <ul className="hidden items-center gap-8 md:flex">
+            <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
               {navigation.map((item) => (
                 <li key={item.to}>
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
                       cn(
-                        "link-line text-[14px] tracking-[-0.01em] transition-colors",
+                        "link-line text-[13.5px] tracking-[-0.01em] transition-colors",
                         isActive ? "is-active text-ink" : "text-ink-2 hover:text-ink"
                       )
                     }
@@ -95,7 +95,7 @@ export function Nav() {
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
                 aria-controls="mobile-menu"
-                className="text-[14px] font-medium tracking-[-0.01em] text-ink md:hidden"
+                className="text-[14px] font-medium tracking-[-0.01em] text-ink lg:hidden"
               >
                 {open ? "Close" : "Menu"}
               </button>
@@ -108,7 +108,7 @@ export function Nav() {
       <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-0 z-40 bg-paper pt-16 transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-40 bg-paper pt-16 transition-opacity duration-300 lg:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         aria-hidden={!open}

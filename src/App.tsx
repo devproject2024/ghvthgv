@@ -3,6 +3,9 @@ import { Layout } from "@/components/Layout";
 import Home from "@/pages/Home";
 import Work from "@/pages/Work";
 import ProjectDetail from "@/pages/ProjectDetail";
+import Markets from "@/pages/Markets";
+import Ventures from "@/pages/Ventures";
+import VentureDetail from "@/pages/VentureDetail";
 import About from "@/pages/About";
 import Experience from "@/pages/Experience";
 import Contact from "@/pages/Contact";
@@ -24,6 +27,9 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="work" element={<Work />} />
           <Route path="work/:slug" element={<ProjectDetail />} />
+          <Route path="markets" element={<Markets />} />
+          <Route path="ventures" element={<Ventures />} />
+          <Route path="ventures/:slug" element={<VentureDetail />} />
           <Route path="about" element={<About />} />
           <Route path="experience" element={<Experience />} />
           <Route path="contact" element={<Contact />} />

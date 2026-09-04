@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Generated CV extraction (regenerate with `npm run cv:extract`)
+cv/extracted.json
+
+# Local env / editor / OS
+.env
+.env.*
+*.local
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
