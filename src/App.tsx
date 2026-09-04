@@ -6,6 +6,8 @@ import ProjectDetail from "@/pages/ProjectDetail";
 import Markets from "@/pages/Markets";
 import Ventures from "@/pages/Ventures";
 import VentureDetail from "@/pages/VentureDetail";
+import Blog from "@/pages/Blog";
+import BlogDetail from "@/pages/BlogDetail";
 import About from "@/pages/About";
 import Experience from "@/pages/Experience";
 import Contact from "@/pages/Contact";
@@ -30,6 +32,8 @@ export default function App() {
           <Route path="markets" element={<Markets />} />
           <Route path="ventures" element={<Ventures />} />
           <Route path="ventures/:slug" element={<VentureDetail />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogDetail />} />
           <Route path="about" element={<About />} />
           <Route path="experience" element={<Experience />} />
           <Route path="contact" element={<Contact />} />

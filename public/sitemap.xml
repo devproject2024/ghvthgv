@@ -8,6 +8,8 @@
   <url><loc>https://daiwikrankawat.com/markets</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://daiwikrankawat.com/ventures</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://daiwikrankawat.com/ventures/restaurant</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://daiwikrankawat.com/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://daiwikrankawat.com/blog/cinema-audience-time-series</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://daiwikrankawat.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://daiwikrankawat.com/experience</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://daiwikrankawat.com/contact</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
