@@ -1,3 +1,5 @@
+
+import { useState } from "react";
 import type { Media } from "@/content/types";
 import { cn } from "@/utils/cn";
 import { Reveal } from "./Reveal";
@@ -42,18 +44,24 @@ export function Figure({
   cutout,
 }: FigureProps) {
   const ratio = media?.aspect ?? aspect;
+  const [failed, setFailed] = useState(false);
+
+  // A missing/unloadable file degrades to the honest placeholder — never a
+  // broken-image icon. This also means you can wire paths before dropping files.
+  const showMedia = media && !failed;
 
   const body = (
     <div
       className={cn(
         "relative w-full overflow-hidden",
         hover && "img-hover",
-        !media && (dark ? "placeholder-surface-dark" : "placeholder-surface"),
-        media && !cutout && (dark ? "bg-carbon-2" : "bg-paper-2")
+        !showMedia && (dark ? "placeholder-surface-dark" : "placeholder-surface"),
+        showMedia && !cutout && (dark ? "bg-carbon-2" : "bg-paper-2")
+
       )}
       style={{ aspectRatio: ratio }}
     >
-      {media ? (
+      {showMedia ? (
         media.type === "video" ? (
           <video
             src={media.src}
@@ -63,6 +71,7 @@ export function Figure({
             loop
             playsInline
             aria-label={media.alt}
+            onError={() => setFailed(true)}
           />
         ) : (
           <img
@@ -70,11 +79,14 @@ export function Figure({
             alt={media.alt}
             loading={priority ? "eager" : "lazy"}
             decoding="async"
+            onError={() => setFailed(true)}
             className={cn("absolute inset-0 h-full w-full", cutout ? "object-contain" : "object-cover")}
           />
         )
       ) : (
         <Placeholder label={placeholderLabel} note={placeholderNote} dark={dark} />
+        <Placeholder label={placeholderLabel} note={failed ? media?.alt ?? placeholderNote : placeholderNote} dark={dark} />
+
       )}
     </div>
   );

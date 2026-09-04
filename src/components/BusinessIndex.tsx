@@ -58,7 +58,7 @@ export function BusinessIndex({ businesses, preview = true, className }: Busines
                   {preview && (
                     <div className="mb-5 lg:hidden">
                       <Figure
-                        media={b.cover ?? b.logo}
+                        media={b.cover}
                         aspect="16/10"
                         placeholderLabel={b.name}
                         placeholderNote="Photograph to be added"
@@ -109,7 +109,7 @@ export function BusinessIndex({ businesses, preview = true, className }: Busines
                     aria-hidden={i !== active}
                   >
                     <Figure
-                      media={b.cover ?? b.logo}
+                      media={b.cover}
                       aspect="4/3"
                       placeholderLabel={b.name}
                       placeholderNote="Photograph to be added"
@@ -200,3 +200,4 @@ function useCursorLabel(label: string) {
 
   return { move, show, hide, element };
 }
+
