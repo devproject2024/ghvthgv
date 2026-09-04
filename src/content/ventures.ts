@@ -2,52 +2,62 @@ import type { Venture } from "./types";
 
 /**
  * ╔══════════════════════════════════════════════════════════════════╗
- * ║  EDIT YOUR BUSINESS / INVESTING ACTIVITIES HERE                  ║
- * ║  Shown under "Beyond software" on the home and About pages.      ║
- * ║  Keep it factual. Add `url` to link out, `detail` for more copy. ║
+ * ║  PURSUITS — short, factual list for the home & about pages.      ║
+ * ║  Detailed businesses live in businesses.ts; investment detail    ║
+ * ║  and framing live in investments.ts / markets.ts.                ║
  * ╚══════════════════════════════════════════════════════════════════╝
  */
 export const ventures: Venture[] = [
   {
     name: "Investing",
-    role: "Personal portfolio",
+    role: "Public markets",
     status: "Active",
+    domain: "markets",
     description:
-      "Long-horizon public-market investing. Research-led, position-sized, and reviewed against a written thesis.",
+      "Long-horizon, research-led public-market investing — position-sized against a written thesis and reviewed rather than traded on noise.",
+    url: "/markets",
   },
   {
     name: "Trading",
-    role: "Personal",
+    role: "Systematic",
     status: "Active",
+    domain: "markets",
     description:
       "Shorter-horizon trading with a systematic bias — the same discipline around data, testing and risk that goes into the models I build.",
+    url: "/markets",
   },
   {
     name: "Venture",
-    role: "Venture investing",
+    role: "Early-stage",
     status: "Active",
+    domain: "markets",
     description:
-      "Involved in early-stage venture investing — evaluating founders, products and markets at the point where most of the risk is still technical.",
+      "Involved in early-stage venture — evaluating founders, products and markets at the point where most of the risk is still technical.",
+    url: "/markets",
   },
   {
-    name: "Restaurant business",
+    name: "Restaurant venture",
     role: "Operations",
     status: "Active",
+    domain: "ventures",
     description:
-      "Involved in running a restaurant business — the day-to-day of margins, staffing, suppliers and customers, where decisions have physical consequences.",
+      "Helping operate a restaurant business — the day-to-day of margins, staffing, suppliers and customers, where decisions have physical consequences.",
+    url: "/ventures",
   },
   {
     name: "Products & ideas",
     role: "Builder",
     status: "Active",
+    domain: "ventures",
     description:
       "Software products and business ideas in various stages — from notes to prototypes to things people use.",
+    url: "/work",
   },
 ];
 
-/** Short framing copy for the section. Edit freely. */
+/** Short framing copy for the "Beyond software" section. Edit freely. */
 export const venturesIntro = {
   eyebrow: "Beyond software",
   title: "Technology isn't the only thing I work on.",
-  body: "I spend a meaningful part of my time in markets, early-stage companies and a physical business. They teach different things — capital, people, operations — and they make the software better.",
+  body: "A meaningful part of my time goes to markets, early-stage companies and a physical business. They teach different things — capital, people, operations — and they make the software better.",
 };

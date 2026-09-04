@@ -19,6 +19,8 @@ export function Footer() {
             <ul className="space-y-2.5">
               {[
                 { label: "Work", to: "/work" },
+                { label: "Markets", to: "/markets" },
+                { label: "Ventures", to: "/ventures" },
                 { label: "About", to: "/about" },
                 { label: "Experience", to: "/experience" },
                 { label: "Contact", to: "/contact" },
