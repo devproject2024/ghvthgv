@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Update the domain when deployed. Add /work/<slug> entries for each project. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://daiwikrankawat.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://daiwikrankawat.com/work</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://daiwikrankawat.com/work/examination-platform</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://daiwikrankawat.com/work/cinema-audience-forecasting</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://daiwikrankawat.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://daiwikrankawat.com/experience</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://daiwikrankawat.com/contact</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+</urlset>

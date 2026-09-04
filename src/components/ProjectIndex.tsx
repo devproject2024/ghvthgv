@@ -1,0 +1,206 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import type { Project } from "@/content/types";
+import { projectNumber } from "@/content";
+import { cn } from "@/utils/cn";
+import { Figure } from "./Figure";
+import { Reveal } from "./Reveal";
+
+interface ProjectIndexProps {
+  projects: Project[];
+  /** Show the preview column (desktop). */
+  preview?: boolean;
+  className?: string;
+}
+
+/**
+ * THE SIGNATURE INTERACTION
+ * A numbered index of projects. On desktop, moving across rows swaps the
+ * preview composition on the right; a small label follows the cursor.
+ * On touch devices, the same list renders with inline thumbnails.
+ */
+export function ProjectIndex({ projects, preview = true, className }: ProjectIndexProps) {
+  const [active, setActive] = useState(0);
+  const [hovering, setHovering] = useState(false);
+  const cursor = useCursorLabel();
+
+  if (!projects.length) return null;
+  const current = projects[active] ?? projects[0];
+
+  return (
+    <div className={cn("grid grid-cols-12 gap-x-6", className)}>
+      {/* List */}
+      <div
+        className={cn("col-span-12", preview && "lg:col-span-7")}
+        onPointerEnter={() => setHovering(true)}
+        onPointerLeave={() => {
+          setHovering(false);
+          cursor.hide();
+        }}
+        onPointerMove={cursor.move}
+      >
+        <ol className="border-t border-line">
+          {projects.map((p, i) => {
+            const isActive = i === active;
+            return (
+              <li key={p.slug} className="border-b border-line">
+                <Link
+                  to={`/work/${p.slug}`}
+                  onPointerEnter={() => {
+                    setActive(i);
+                    cursor.show();
+                  }}
+                  onFocus={() => setActive(i)}
+                  className={cn(
+                    "group block py-6 transition-opacity duration-500 sm:py-7 lg:py-8",
+                    hovering && !isActive ? "opacity-40" : "opacity-100"
+                  )}
+                >
+                  {/* Mobile thumbnail */}
+                  {preview && (
+                    <div className="mb-5 lg:hidden">
+                      <Figure
+                        media={p.cover}
+                        aspect="16/10"
+                        placeholderLabel={p.title}
+                        placeholderNote="Screenshot to be added"
+                        reveal={false}
+                      />
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-12 items-baseline gap-x-4">
+                    <span className="text-label tabular col-span-2 text-ink-3 sm:col-span-1">{projectNumber(p.slug)}</span>
+                    <h3
+                      className={cn(
+                        "text-h3 col-span-10 transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] sm:col-span-7",
+                        isActive && hovering && "lg:translate-x-2"
+                      )}
+                    >
+                      {p.title}
+                    </h3>
+                    <div className="col-span-10 col-start-3 mt-2 flex items-center gap-3 sm:col-span-4 sm:col-start-9 sm:mt-0 sm:justify-end">
+                      <span className="text-label text-ink-3">{p.category}</span>
+                      <span className="text-label text-ink-3 tabular">{p.year}</span>
+                    </div>
+                    <p className="col-span-10 col-start-3 mt-3 max-w-[60ch] text-[15px] leading-relaxed text-ink-2 sm:col-span-9 sm:col-start-2">
+                      {p.summary}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      {/* Preview — desktop only */}
+      {preview && (
+        <div className="hidden lg:col-span-5 lg:col-start-8 lg:block">
+          <div className="sticky top-28">
+            <Reveal>
+              <div className="relative overflow-hidden bg-paper-2" style={{ aspectRatio: "4/3" }}>
+                {projects.map((p, i) => (
+                  <div
+                    key={p.slug}
+                    className={cn(
+                      "absolute inset-0 transition-[opacity,transform,clip-path] duration-700 [transition-timing-function:var(--ease-out-expo)]",
+                      i === active ? "z-10 opacity-100 scale-100" : "z-0 opacity-0 scale-[1.02]"
+                    )}
+                    aria-hidden={i !== active}
+                  >
+                    <Figure
+                      media={p.cover}
+                      aspect="4/3"
+                      placeholderLabel={p.title}
+                      placeholderNote="Screenshot to be added"
+                      reveal={false}
+                      className="h-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+
+            <div className="mt-5 grid grid-cols-5 gap-x-4 border-t border-line pt-4">
+              <div className="col-span-1 text-label text-ink-3">Role</div>
+              <div className="col-span-4 text-[14px] text-ink-2">{current.role}</div>
+              <div className="col-span-1 mt-2 text-label text-ink-3">Stack</div>
+              <div className="col-span-4 mt-2 text-[14px] text-ink-2">{current.technologies.join(", ")}</div>
+              <div className="col-span-1 mt-2 text-label text-ink-3">Status</div>
+              <div className="col-span-4 mt-2 flex items-center gap-2 text-[14px] text-ink-2">
+                <span
+                  className={cn(
+                    "inline-block h-1.5 w-1.5 rounded-full",
+                    current.status === "Live" || current.status === "In progress" ? "bg-accent" : "bg-ink-3"
+                  )}
+                />
+                {current.status}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {cursor.element}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Cursor label — desktop (fine pointer) only, never blocks clicks.    */
+/* ------------------------------------------------------------------ */
+function useCursorLabel(label = "View project") {
+  const ref = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const frame = useRef<number | null>(null);
+  const pos = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine) and (min-width: 1024px)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setEnabled(mq.matches && !reduce.matches);
+    update();
+    mq.addEventListener("change", update);
+    reduce.addEventListener("change", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      reduce.removeEventListener("change", update);
+    };
+  }, []);
+
+  const move = useCallback(
+    (e: React.PointerEvent) => {
+      if (!enabled) return;
+      pos.current = { x: e.clientX, y: e.clientY };
+      if (frame.current) return;
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        if (ref.current) {
+          ref.current.style.transform = `translate3d(${pos.current.x + 16}px, ${pos.current.y + 16}px, 0)`;
+        }
+      });
+    },
+    [enabled]
+  );
+
+  const show = useCallback(() => enabled && setVisible(true), [enabled]);
+  const hide = useCallback(() => setVisible(false), []);
+
+  const element = enabled ? (
+    <div
+      ref={ref}
+      aria-hidden
+      className={cn(
+        "pointer-events-none fixed left-0 top-0 z-[60] flex h-8 items-center bg-ink px-3 text-label text-paper transition-opacity duration-200",
+        visible ? "opacity-100" : "opacity-0"
+      )}
+    >
+      {label}
+      <span className="ml-2">→</span>
+    </div>
+  ) : null;
+
+  return { move, show, hide, element };
+}
