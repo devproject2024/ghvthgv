@@ -70,26 +70,33 @@ export default function Experience() {
                     {e.location && <p className="text-mono-sm text-ink-3">{e.location}</p>}
                   </div>
                   <div className="col-span-12 sm:col-span-9">
-                    <h3 className="text-h3 text-ink">{e.role}</h3>
-                    <p className="mt-1 text-[15px] text-ink-2">
-                      {e.url ? (
-                        <a href={e.url} target="_blank" rel="noreferrer noopener" className="link-line">
-                          {e.organisation}
-                        </a>
-                      ) : (
-                        e.organisation
-                      )}
-                    </p>
-                    <div className="mt-5 max-w-[62ch] space-y-3">
-                      {e.summary.map((s, j) => (
-                        <p key={j} className="text-[15px] leading-relaxed text-ink-2">
-                          {s}
-                        </p>
-                      ))}
-                    </div>
-                    {e.technologies && e.technologies.length > 0 && (
-                      <p className="text-mono-sm mt-6 text-ink-3">{e.technologies.join(" · ")}</p>
-                    )}
+                      <div className="flex items-center gap-3">
+                        <LogoMark logo={e.logo ?? { name: e.organisation }} size={40} />
+                        <div>
+
+                          <h3 className="text-h3 text-ink">{e.role}</h3>
+                          <p className="mt-1 text-[15px] text-ink-2">
+                            {e.url ? (
+                              <a href={e.url} target="_blank" rel="noreferrer noopener" className="link-line">
+                                {e.organisation}
+                              </a>
+                            ) : (
+                              e.organisation
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                          <div className="mt-5 max-w-[62ch] space-y-3">
+                            {e.summary.map((s, j) => (
+                              <p key={j} className="text-[15px] leading-relaxed text-ink-2">
+                                {s}
+                              </p>
+                            ))}
+                          </div>
+                          {e.technologies && e.technologies.length > 0 && (
+                            <p className="text-mono-sm mt-6 text-ink-3">{e.technologies.join(" · ")}</p>
+                          )}
+                      
                   </div>
                 </Reveal>
               ))}
@@ -116,7 +123,10 @@ export default function Experience() {
                     {e.location && <p className="text-mono-sm text-ink-3">{e.location}</p>}
                   </div>
                   <div className="col-span-12 sm:col-span-9">
-                    <h3 className="text-[1.125rem] font-medium tracking-[-0.015em] text-ink">{e.institution}</h3>
+                    <div className="flex items-center gap-3">
+                      <LogoMark logo={e.logo ?? { name: e.institution }} size={40} />
+                      <h3 className="text-[1.125rem] font-medium tracking-[-0.015em] text-ink">{e.institution}</h3>
+                    </div>
                     <p className="mt-1 text-[15px] text-ink-2">
                       {e.degree}
                       {e.field && ` in ${e.field}`}
@@ -221,6 +231,7 @@ export default function Experience() {
           </div>
         </Container>
       </section>
+
 
       {/* Skills --------------------------------------------------------- */}
       <section className="py-20 lg:py-32">

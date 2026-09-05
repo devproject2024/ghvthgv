@@ -1,12 +1,14 @@
 import { Link, Navigate, useParams } from "react-router-dom";
-import type { ProjectSection } from "@/content/types";
-import { businesses, getBusiness, businessNumber, nextBusiness } from "@/content";
+import type { ProjectSection, BusinessMetric } from "@/content/types";
+import { businesses, getBusiness, businessNumber, nextBusiness, settings } from "@/content";
 import { DOMAINS } from "@/content/domains";
 import { Meta } from "@/components/Meta";
 import { Figure, Gallery } from "@/components/Figure";
 import { Container, Eyebrow, Rule } from "@/components/primitives";
 import { Reveal } from "@/components/Reveal";
-import { StatFigure } from "@/components/Stats";
+import { BusinessMetrics } from "@/components/Stats";
+import { Outlets } from "@/components/Outlets";
+import { LogoMark } from "@/components/LogoMark";
 import { cn } from "@/utils/cn";
 
 export default function VentureDetail() {
@@ -30,9 +32,18 @@ export default function VentureDetail() {
   if (business.website) links.push({ label: "Visit website", href: business.website });
   for (const l of business.links ?? []) links.push({ label: l.label, href: l.href });
 
-  const visibleMetrics = (business.metrics ?? []).filter(
-    (m) => !(typeof m.value === "string" && m.value.startsWith("[ADD"))
-  );
+  // Business metrics: financial ones respect privacy flags; operational ones
+  // (outlets, growth %) are shown whenever provided.
+  const visibleMetrics: BusinessMetric[] = (business.metrics ?? [])
+    .filter((m) => !(typeof m.value === "string" && m.value.trim().startsWith("[ADD")))
+    .map((m) => {
+      const isRevenue = /revenue/i.test(m.label);
+      const isProfit = /profit/i.test(m.label);
+      if (isRevenue && !settings.finance.showRevenue) return { ...m, value: "[HIDDEN]" };
+      if (isProfit && !settings.finance.showProfit) return { ...m, value: "[HIDDEN]" };
+      return m;
+    })
+    .filter((m) => m.value !== "[HIDDEN]");
 
   return (
     <article>
@@ -58,7 +69,10 @@ export default function VentureDetail() {
                 <span aria-hidden>·</span>
                 <span className="tabular">{business.year}</span>
               </div>
-              <h1 className="text-display max-w-[14ch] text-ink">{business.name}</h1>
+              <div className="flex items-center gap-4">
+                <LogoMark logo={business.logo ?? { name: business.name }} size={56} />
+                <h1 className="text-display max-w-[14ch] text-ink">{business.name}</h1>
+              </div>
             </Reveal>
 
             <Reveal delay={100} className="col-span-12 lg:col-span-7">
@@ -102,7 +116,7 @@ export default function VentureDetail() {
       <section>
         <Container>
           <Figure
-            media={business.cover ?? business.logo}
+            media={business.cover}
             aspect="16/9"
             priority
             placeholderLabel={business.name}
@@ -167,13 +181,9 @@ export default function VentureDetail() {
               {visibleMetrics.length > 0 && (
                 <Reveal className="col-span-12 lg:col-span-7">
                   <Eyebrow dark className="mb-8">
-                    Figures
+                    Key figures
                   </Eyebrow>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
-                    {visibleMetrics.map((m) => (
-                      <StatFigure key={m.label} value={m.value} label={m.label} format={m.format} dark />
-                    ))}
-                  </div>
+                  <BusinessMetrics dark metrics={visibleMetrics} />
                 </Reveal>
               )}
               {business.team && (
@@ -185,6 +195,15 @@ export default function VentureDetail() {
                 </Reveal>
               )}
             </div>
+          </Container>
+        </section>
+      )}
+
+      {/* Locations / outlets (multi-location ventures) */}
+      {business.outlets && business.outlets.length > 0 && (
+        <section className="py-20 lg:py-28">
+          <Container>
+            <Outlets outlets={business.outlets} />
           </Container>
         </section>
       )}
@@ -229,3 +248,4 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
     </div>
   );
 }
+

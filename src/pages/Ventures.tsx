@@ -58,7 +58,7 @@ export default function Ventures() {
               >
                 <div className="col-span-12 order-2 lg:order-1 lg:col-span-7">
                   <Figure
-                    media={feature.cover ?? feature.logo}
+                    media={feature.cover}
                     aspect="16/10"
                     hover
                     placeholderLabel={feature.name}
@@ -102,3 +102,4 @@ export default function Ventures() {
     </>
   );
 }
+
