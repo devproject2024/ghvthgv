@@ -84,7 +84,7 @@ export function Figure({
           />
         )
       ) : (
-        <Placeholder label={placeholderLabel} note={placeholderNote} dark={dark} />
+        // <Placeholder label={placeholderLabel} note={placeholderNote} dark={dark} />
         <Placeholder label={placeholderLabel} note={failed ? media?.alt ?? placeholderNote : placeholderNote} dark={dark} />
 
       )}
