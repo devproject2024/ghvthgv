@@ -43,6 +43,15 @@
   --color-ventures-soft: #f1e4db;
   --color-ventures-bright: #d69a77;
 
+  /* Semantic performance colours — muted, editorial (never neon). */
+  --color-up: #31604a;            /* positive / gain */
+  --color-up-soft: #e4ece5;
+  --color-down: #a64238;          /* negative / loss */
+  --color-down-soft: #f0e2df;
+  --color-up-bright: #8fb89c;     /* on carbon */
+  --color-down-bright: #d6958c;   /* on carbon */
+
+
   /* Inverted (dark) surfaces */
   --color-carbon: #111110;
   --color-carbon-2: #1c1b19;
@@ -207,9 +216,21 @@
   .reveal-clip.is-visible {
     clip-path: inset(0 0 0 0);
   }
+    /* Opacity-only reveal — for elements (e.g. table rows) where a transform
+     is unreliable. No translate, just a gentle fade. */
+  .reveal-fade {
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-out-quart);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-fade.is-visible {
+    opacity: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal,
-    .reveal-clip {
+    .reveal-clip,
+    .reveal-fade {
       opacity: 1;
       transform: none;
       clip-path: none;

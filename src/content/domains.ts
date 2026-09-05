@@ -65,3 +65,4 @@ const CATEGORY_DOMAIN: Record<ProjectCategory, Domain> = {
 export function projectDomain(category: ProjectCategory): Domain {
   return CATEGORY_DOMAIN[category] ?? "editorial";
 }
+

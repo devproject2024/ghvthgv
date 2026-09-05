@@ -117,12 +117,16 @@ export interface Experience {
   summary: string[];
   technologies?: string[];
   url?: string;
+  /** Company logo — monogram fallback renders if omitted. */
+  logo?: Logo;
 }
 
 export interface Education {
   institution: string;
   degree: string;
   field?: string;
+  /** University logo — monogram fallback renders if omitted. */
+  logo?: Logo;
   start: string;
   end: string;
   /** e.g. "Expected" — displayed next to the end date. */
@@ -169,6 +173,18 @@ export interface Venture {
   url?: string;
 }
 
+
+export interface Logo {
+  /** Path or URL to the logo image. If omitted, a text monogram is used. */
+  src?: string;
+  /** Optional dark-surface variant. */
+  srcDark?: string;
+  /** Alt text. */
+  alt?: string;
+  /** Text used for the monogram fallback (usually a company/university short name). */
+  name: string;
+}
+
 /* ------------------------------------------------------------------ */
 /* Businesses / ventures (dedicated /ventures pages)                   */
 /* ------------------------------------------------------------------ */
@@ -181,12 +197,29 @@ export type BusinessStatus =
   | "Paused"
   | "Exited";
 
+/** A single outlet / location for a multi-location venture (e.g. a restaurant chain). */
+export interface Outlet {
+  name: string;
+  city: string;
+  country: string;
+  address?: string;
+  status?: "Open" | "Opening soon" | "Closed";
+  openingDate?: string;
+  website?: string;
+  mapsUrl?: string;
+  image?: Media;
+}
+
 export interface BusinessMetric {
-  /** Raw numeric value — rendered through the number formatter when `format` is "compact". */
+  /** Raw numeric value — rendered through the number formatter / animated count. */
   value: string | number;
   label: string;
-  /** "compact" applies K/M/B formatting to numeric values. */
-  format?: "text" | "compact";
+  /** "compact" applies K/M/B formatting; "currency" adds the symbol; "number" counts up. */
+  format?: "text" | "compact" | "currency" | "number" | "percent";
+  /** Optional prefix (e.g. currency symbol) for currency/number formats. */
+  prefix?: string;
+  /** Optional suffix (e.g. "+", "%", " outlets"). */
+  suffix?: string;
 }
 
 export interface Business {
@@ -215,7 +248,7 @@ export interface Business {
   links?: Link[];
 
   /** Logo / cover / photographs. Placeholders render when absent. */
-  logo?: Media;
+  logo?: Logo;
   cover?: Media;
   gallery?: Media[];
 
@@ -224,6 +257,9 @@ export interface Business {
   story?: string[];
   operations?: string[];
   extraSections?: ProjectSection[];
+
+  /** Multi-location outlets (e.g. a restaurant chain). Rendered only when provided. */
+  outlets?: Outlet[];
 
   /** OPTIONAL — only displayed if you provide AND privacy allows. Never invent. */
   metrics?: BusinessMetric[];
@@ -235,51 +271,71 @@ export interface Business {
 /* ------------------------------------------------------------------ */
 
 export type InvestmentType =
-  | "Angel"
-  | "Venture fund"
-  | "Syndicate"
-  | "Public equity"
-  | "Private"
+  | "Direct equity"
+  | "SIP"
+  | "Long-term"
+  | "Trading"
+  | "Startup"
+  | "Venture"
+  | "Fund"
   | "Other";
 
 export type InvestmentStatus = "Active" | "Realized" | "Tracking" | "Exited";
 
+/** A single holding. All financial fields are optional and privacy-gated. */
 export interface Investment {
   /** URL slug — reserved for future /markets/<slug> detail pages. */
   slug: string;
-  /** Company or fund name. */
+  /** Company / instrument name, e.g. "State Bank of India". */
   name: string;
-  /** Sector / category, e.g. "Developer tools", "Fintech". */
+  /** Ticker / short code, e.g. "SBIN". */
+  ticker?: string;
+  /** Sector / category, e.g. "Public equities", "SIP", "Startups". */
   category: string;
-  type: InvestmentType;
+  assetType: InvestmentType;
   status: InvestmentStatus;
-  /** Date text, e.g. "2025" or "Q2 2026". */
-  date?: string;
 
-  /** Short thesis — why, in one or two lines. */
-  thesis: string;
-  description?: string;
+  /** Number of shares/units (numeric enables the "30K shares" display). */
+  shares?: number;
+  /** Free-text units label, default "shares" (e.g. "units"). */
+  unitsLabel?: string;
+  /** Optional ownership percentage. */
+  ownershipPercentage?: number;
+  /** Invested cost basis. */
+  investedAmount?: number;
+  /** Current value. */
+  currentValue?: number;
+  /** Absolute profit/loss (positive = gain, negative = loss). */
+  profitLoss?: number;
+  /** Return percentage (positive/negative). */
+  profitLossPercentage?: number;
+  /** Currency symbol for this holding; defaults to the site setting. */
+  currency?: string;
+
+  /** Short note / thesis. */
+  thesis?: string;
   notes?: string;
 
-  /** Logo / image. Placeholder renders when absent. */
-  logo?: Media;
+  /** Logo / image. Monogram fallback renders when absent. */
+  logo?: Logo;
   website?: string;
   links?: Link[];
-
-  /* PRIVATE — rendered only if settings.finance.showInvestmentAmounts is true. */
-  amount?: number;
-  ownership?: string;
+  /** Marks clearly-fictitious sample rows that only demonstrate the UI. */
+  demo?: boolean;
 }
 
-/** Portfolio summary figures. Every value is gated by the privacy flags. */
-export interface PortfolioStat {
+/** Headline overview metric for the Markets page. Privacy-gated. */
+export interface MarketStat {
   label: string;
-  /** Numeric for compact formatting, or a string to render verbatim. */
-  value: string | number;
-  /** Compact (K/M/B) for numeric values. */
-  format?: "text" | "compact" | "percent";
+  value: number;
+  /** "compact" (10K/1M) | "currency" | "number" (count up) | "percent". */
+  format?: "text" | "compact" | "currency" | "number" | "percent";
+  prefix?: string;
+  suffix?: string;
   /** Which privacy flag must be on for this to render. */
-  privacy: "showInvestmentAmounts" | "showPortfolioAllocation" | "showNetWorth" | "showPerformance";
+  privacy: keyof FinancePrivacy;
+  /** When true the value counts up on scroll. */
+  animate?: boolean;
 }
 
 export interface MarketsContent {
@@ -292,7 +348,44 @@ export interface MarketsContent {
   portfolioHeading: string;
   /** Copy shown while no investments are listed (default — privacy). */
   portfolioNote: string;
+  /** "Submit an opportunity" section copy. */
+  pitch: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    ctaLabel: string;
+    /** Where the CTA points (e.g. mailto: or a future /apply route). */
+    ctaHref: string;
+    /** Show the section at all. */
+    enabled: boolean;
+    /** e.g. "Opening 2027" — shown only if set; never claims you're accepting now. */
+    note?: string;
+  };
 }
+
+
+export interface FinancePrivacy {
+  /** Reveal net-worth figures anywhere. */
+  showNetWorth: boolean;
+  /** Reveal invested cost amounts. */
+  showInvestedAmount: boolean;
+  /** Reveal current value. */
+  showCurrentValue: boolean;
+  /** Reveal profit/loss amounts and percentages. */
+  showProfitLoss: boolean;
+  /** Reveal ownership percentages. */
+  showOwnership: boolean;
+  /** Reveal business revenue figures. */
+  showRevenue: boolean;
+  /** Reveal business profit figures. */
+  showProfit: boolean;
+  /** Reveal portfolio totals / allocation / AUM. */
+  showPortfolioAllocation: boolean;
+  /** Reveal performance figures. */
+  showPerformance: boolean;
+}
+
+
 
 /* ------------------------------------------------------------------ */
 /* Leadership & certifications                                         */
@@ -334,6 +427,89 @@ export interface SocialLink {
   /** Short handle shown next to the label, e.g. "@daiwik" */
   handle?: string;
 }
+
+/* ------------------------------------------------------------------ */
+/* Blog / writing / research                                           */
+/* ------------------------------------------------------------------ */
+
+export type BlogCategory =
+  | "Research"
+  | "AI / ML"
+  | "Software"
+  | "Markets"
+  | "Business"
+  | "Notes"
+  | "Personal";
+
+export type BlogStatus = "Published" | "Draft" | "Demo";
+
+/* A chart block embedded in a research article. Pure data → rendered by the
+   reusable Chart components (SVG, dependency-free). */
+export interface ChartSpec {
+  type: "line" | "bar";
+  title?: string;
+  caption?: string;
+  source?: string;
+  /** "tech" | "markets" | "ventures" | "editorial" — picks the accent colour. */
+  accent?: Domain;
+  /** x labels, e.g. ["Jan", "Feb", …]. */
+  labels: string[];
+  /** One or more series. */
+  series: { name: string; data: number[] }[];
+  /** Optional axis unit label, e.g. "audience (000s)". */
+  unit?: string;
+}
+
+export interface BlogTable {
+  title?: string;
+  caption?: string;
+  source?: string;
+  headers: string[];
+  rows: string[][];
+}
+
+export interface BlogMetric {
+  value: string;
+  label: string;
+}
+
+/** A single block in an article body — a tagged union the renderer maps. */
+export type BlogBlock =
+  | { kind: "text"; paragraphs: string[] }
+  | { kind: "heading"; text: string }
+  | { kind: "subheading"; text: string }
+  | { kind: "list"; items: string[]; ordered?: boolean }
+  | { kind: "quote"; text: string; cite?: string }
+  | { kind: "code"; language?: string; code: string }
+  | { kind: "image"; media: Media; full?: boolean }
+  | { kind: "metrics"; items: BlogMetric[] }
+  | { kind: "chart"; chart: ChartSpec }
+  | { kind: "table"; table: BlogTable };
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  /** Subtitle / one-line summary shown under the title. */
+  excerpt: string;
+  category: BlogCategory;
+  tags: string[];
+  /** ISO date, e.g. "2026-08-14". */
+  date: string;
+  /** Reading time in minutes. */
+  readTime: number;
+  author?: string;
+  status: BlogStatus;
+  /** Pin to the top of the blog index. */
+  featured?: boolean;
+  /** Marks clearly-fictional demonstration content. */
+  demo?: boolean;
+  cover?: Media;
+  /** Optional external article (links out instead of an internal page). */
+  externalUrl?: string;
+  /** Body blocks. Ignored when externalUrl is set. */
+  content?: BlogBlock[];
+}
+
 
 export interface Profile {
   name: string;

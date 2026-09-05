@@ -67,14 +67,38 @@ export const profile: Profile = {
     "Product analytics",
   ],
 
-  photos: [
-    // Add your photographs here. Examples:
-    // { src: "/images/daiwik-portrait.jpg", alt: "Daiwik Rankawat", aspect: "4/5", placement: "hero" },
-    // { src: "/images/daiwik-working.jpg", alt: "Daiwik at his desk", aspect: "3/2", placement: "about" },
+  /*
+   * PHOTOS — drop your files at these exact paths and they appear automatically:
+   *   HOME portrait  → /public/images/profile/home-portrait.jpg   (aspect 4/5)
+   *   ABOUT large    → /public/images/profile/about-portrait.jpg  (aspect 3/2)
+   *   ABOUT secondary→ /public/images/profile/about-secondary.jpg (aspect 4/5)
+   * Until the file exists, a tasteful placeholder renders (never a broken image).
+   * JPG/PNG/WebP/AVIF all work — just update the `src` extension if you use one.
+   */
+    photos: [
+    {
+      src: "/images/profile/home-portrait.jpg",
+      alt: "Daiwik Rankawat",
+      aspect: "4/5",
+      placement: "hero",
+    },
+    {
+      src: "/images/profile/about-portrait.jpg",
+      alt: "Portrait of Daiwik Rankawat",
+      aspect: "3/2",
+      placement: "about",
+    },
+    {
+      src: "/images/profile/about-secondary.jpg",
+      alt: "Daiwik Rankawat",
+      aspect: "4/5",
+      placement: "about",
+    },
   ],
 
+
   resume: {
-    href: "/Daiwik-Rankawat-Resume.pdf", // ← place the PDF in /public or use a URL
+    href: "/resume/resume.pdf", // ← place the PDF in /public or use a URL
     label: "Résumé",
     note: "PDF · updated 2026",
   },

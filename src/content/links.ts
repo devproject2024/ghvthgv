@@ -27,6 +27,7 @@ export const socialLinks: SocialLink[] = [
  */
 export const navigation = [
   { label: "Work", to: "/work" },
+  { label: "Blog", to: "/blog" },
   { label: "Markets", to: "/markets" },
   { label: "Ventures", to: "/ventures" },
   { label: "About", to: "/about" },

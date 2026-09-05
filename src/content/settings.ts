@@ -2,28 +2,37 @@
  * SITE-WIDE SETTINGS & FINANCIAL PRIVACY
  * -----------------------------------------------------------------
  * Flags the UI reads before deciding whether to render sensitive
- * information. Everything here defaults to PRIVATE — nothing personal
- * or financial is shown unless you explicitly switch it on.
- *
- *   showNetWorth / showInvestmentAmounts / showPortfolioAllocation
- *
- * flip to true only when (and if) you choose to publish that detail.
+ * information. Everything personal/financial defaults to PRIVATE —
+ * nothing is shown unless you explicitly switch the flag to true.
  */
+import type { FinancePrivacy } from "./types";
+
+/**
+ * Financial privacy. Everything defaults to PRIVATE.
+ *
+ * The flags below are ON only so the sample/demo rows in
+ * markets-portfolio.ts can demonstrate the amount & return columns. The
+ * page labels every figure as SAMPLE data. When you replace the demo rows
+ * with your real holdings, set these back to false for anything you want
+ * to keep private.
+ */
+export const financePrivacy: FinancePrivacy = {
+  showNetWorth: true, // demo only — set false + a real value to publish
+  showInvestedAmount: true, // demo columns
+  showCurrentValue: true, // demo columns
+  showProfitLoss: true, // demo columns
+  showOwnership: false,
+  showRevenue: false,
+  showProfit: false,
+  showPortfolioAllocation: true, // powers the "active investments" count
+  showPerformance: true, // powers "investing since"
+};
 
 export interface SiteSettings {
   /** Public website URL (canonical, sitemap, OG). No trailing slash. */
   siteUrl: string;
   /** Financial privacy — all false by default. */
-  finance: {
-    /** Reveal net-worth figures anywhere. */
-    showNetWorth: boolean;
-    /** Reveal per-investment amounts and cheque sizes. */
-    showInvestmentAmounts: boolean;
-    /** Reveal allocation percentages, portfolio totals and AUM. */
-    showPortfolioAllocation: boolean;
-    /** Reveal portfolio / fund performance numbers. */
-    showPerformance: boolean;
-  };
+  finance: FinancePrivacy;
   /** Currency symbol used whenever amounts are enabled. */
   currencySymbol: string;
 }
@@ -31,12 +40,8 @@ export interface SiteSettings {
 export const settings: SiteSettings = {
   siteUrl: "https://daiwikrankawat.com",
 
-  finance: {
-    showNetWorth: false,
-    showInvestmentAmounts: false,
-    showPortfolioAllocation: false,
-    showPerformance: false,
-  },
+  finance: financePrivacy,
 
   currencySymbol: "₹",
 };
+

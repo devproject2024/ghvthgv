@@ -39,3 +39,4 @@ export const certifications: Certification[] = [
     year: "2024/2025",
   },
 ];
+

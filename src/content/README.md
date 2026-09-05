@@ -48,6 +48,7 @@ Four areas of work each have a small muted solid mark, mapped in
 and selected states only — never large backgrounds. Project categories are
 mapped to domains automatically.
 
+
 ## Files and images
 
 Put static files in `/public`:

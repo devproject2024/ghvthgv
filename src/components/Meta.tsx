@@ -52,3 +52,4 @@ function setTag(selector: string, attr: string, attrVal: string, content: string
   }
   el.setAttribute("content", content);
 }
+

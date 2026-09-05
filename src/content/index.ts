@@ -9,9 +9,10 @@
  *   education.ts    → education + competitive achievements
  *   credentials.ts  → leadership roles + certifications
  *   businesses.ts   → companies / ventures (restaurant, etc.)
- *   investments.ts  → portfolio holdings + summary stats (privacy-gated)
+ *   markets-portfolio.ts → holdings + overview stats + demo rows (privacy-gated)
  *   markets.ts      → framing copy for the investing / markets area
  *   ventures.ts     → short "pursuits" list for home & about
+ *   blogs.ts        → blog / research articles (with charts & figures)
  *   skills.ts       → what you build + technologies
  *   links.ts        → social links + navigation
  *   settings.ts     → site URL + financial privacy flags
@@ -25,9 +26,12 @@ export { experience } from "./experience";
 export { education, achievements } from "./education";
 export { leadership, certifications } from "./credentials";
 export { businesses } from "./businesses";
-export { investments, portfolioStats } from "./investments";
+export { investments, marketStats, investmentStartYear } from "./markets-portfolio";
+
+// export { investments, portfolioStats } from "./investments";
 export { markets } from "./markets";
 export { ventures, venturesIntro } from "./ventures";
+export { blogs } from "./blogs";
 export { skillGroups, allTechnologies } from "./skills";
 export { socialLinks, navigation } from "./links";
 export { settings } from "./settings";
@@ -36,6 +40,7 @@ export * from "./types";
 
 import { projects } from "./projects";
 import { businesses } from "./businesses";
+import { blogs } from "./blogs";
 import type { Project, Business } from "./types";
 
 /* ----- Projects ----- */
@@ -77,3 +82,29 @@ export const nextBusiness = (slug: string): Business | undefined => {
   const i = businessIndex(slug);
   return businesses[(i + 1) % businesses.length];
 };
+
+/* ----- Blog / writing ----- */
+
+/** Published articles, newest first (featured float to the top). */
+export const sortedBlogs = (): BlogPost[] =>
+  [...blogs]
+    .filter((b) => b.status !== "Draft")
+    .sort((a, b) => Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date));
+
+export const getBlog = (slug: string): BlogPost | undefined => blogs.find((b) => b.slug === slug);
+
+export const blogCategories = (): string[] => Array.from(new Set(blogs.map((b) => b.category)));
+
+export const relatedBlogs = (slug: string, limit = 2): BlogPost[] => {
+  const current = getBlog(slug);
+  if (!current) return [];
+  return sortedBlogs()
+    .filter((b) => b.slug !== slug)
+    .sort((a, b) => shareCount(current, b) - shareCount(current, a))
+    .slice(0, limit);
+};
+
+function shareCount(a: BlogPost, b: BlogPost): number {
+  const tags = new Set(a.tags);
+  return b.tags.filter((t) => tags.has(t)).length + (a.category === b.category ? 1 : 0);
+}

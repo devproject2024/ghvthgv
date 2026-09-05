@@ -15,6 +15,7 @@ export const education: Education[] = [
     endNote: "Expected",
     location: "Chennai, India",
     credentials: [{ title: "Official Diploma in Programming & Data Science", year: "2025" }],
+    // logo: { name: "IIT Madras", src: "/images/logos/education/iit-madras.png" },
   },
   {
     institution: "Jai Narayan Vyas University",
@@ -23,6 +24,7 @@ export const education: Education[] = [
     start: "2020",
     end: "2023",
     location: "Jodhpur, India",
+    // logo: { name: "Jai Narayan Vyas University", src: "/images/logos/education/jnvu.png" },
   },
 ];
 
